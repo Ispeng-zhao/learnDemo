@@ -20,5 +20,8 @@ public class Test {
         System.out.println("This is Dev 3 ");
     }
 
+    public void  showdev (){
+        System.out.println("This is Dev 3 ");
+    }
 
 }
