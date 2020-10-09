@@ -6,22 +6,9 @@ package com.myself;
  * @Version 1.0
  */
 public class Test {
-    public static void main(String[] args) {
-        System.out.println( " Git test ! ");
-    }
 
-    public void  show (){
-        System.out.println("This is Dev");
-    }
-    public void  show2 (){
-        System.out.println("This is Dev 2 ");
-    }
-    public void  show3 (){
-        System.out.println("This is Dev 3 ");
-    }
 
-    public void  showdev (){
-        System.out.println("This is Dev 3 ");
-    }
+
+
 
 }
