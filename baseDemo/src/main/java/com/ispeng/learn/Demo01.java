@@ -1,4 +1,4 @@
-package com.ispeng.learning;
+package com.ispeng.learn;
 
 public class Demo01 {
 
