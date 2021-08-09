@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<snoop version="2.5">
+<enablePcap>true</enablePcap>
+    
+    
+    <pring streamId="1">
+        <device>
+            <!-- The endpoint address to snoop, e.g. shm://sample or file:///dev/shm/sample -->
+            <endpoint>shm://ens33</endpoint>
+            <property>
+                <!-- Size for the PRING data buffer, min-value=1048576 (1MB), max-value=2147483648 (2GB), 
+                    default value=1073741824 (1GB). -->
+                <highWaterMark>1073741824</highWaterMark>
+                <!-- Control the max cache queue count for the snoop device.If the cached packet-count 
+                    >= the-value, the new incoming packet will either be dropped or be blocked until the queue has free room. 
+                    Set this-value = 0 to disable this feature. Default is 200000. -->
+                <cacheQueueSizeMax>200000</cacheQueueSizeMax>
+                <!-- When thread is blocking, it will deal loop until the queue has the empty room for 
+                    following size. Default is 0. -->
+                <blockingEscapeSize>0</blockingEscapeSize>
+                <!-- Do log when the blocking count > the blocking-log-tick-count. Set this-value = 0 
+                    to disable this feature. Default is 10000. -->
+                <blockingLogTickCount>10000</blockingLogTickCount>
+                <!-- The size of the packets to be pushed to process. Default is 20. -->
+                <pushToProcessSize>20</pushToProcessSize>
+                <!-- The delta millisecond between the packets to be pushed to process. Set this-value 
+                    = 0 to disable this feature. Default is 1000. -->
+                <pushToProcessMilli>1000</pushToProcessMilli>
+                <!-- The size of the packets to break processing. Set this-value = 0 to disable this 
+                    feature. Default is 20. -->
+                <breakProcessSize>100</breakProcessSize>
+            </property>
+        </device>
+        <storage>
+            <target>
+                <!-- for storage target, name pattern only support: %t: second date time, e.g. 20121219102700 
+                    %i: index for the same file name -->
+                <folder>/opt/cbms/var/store/trace_archive_sp/ens33</folder>
+                <namePattern>ens33_%t.pcap</namePattern>
+            </target>
+            <splitBy>
+                <timeSpan>60000</timeSpan>
+                <!-- <byteCount enable="true">102400</byteCount> <packetCount enable="true">100000</packetCount> -->
+            </splitBy>
+            <property>
+                <!-- The packet slice length. Set this-value = 0 to disable this feature. Default is 
+                    0. -->
+                <sliceLength>0</sliceLength>
+                <!-- Sleep time nanoseconds when thread is idle. -->
+                <idleSleepTime>20</idleSleepTime>
+                <!-- Control the max cache queue count for the storage. If the cached packet-count >= 
+                    the-value, the new incoming packet will be blocked until the queue has free room. Set this-value = 0 
+                    to disable this feature. Default is 200000. -->
+                <cacheQueueSizeMax>200000</cacheQueueSizeMax>
+                <!-- When thread is blocking, it will deal loop until the queue has the empty room for 
+                    following size. Default is 0. -->
+                <blockingEscapeSize>0</blockingEscapeSize>
+                <!-- Do log when the blocking count > the blocking-log-tick-count. Set this-value = 0 
+                    to disable this feature. Default is 10000. -->
+                <blockingLogTickCount>10000</blockingLogTickCount>
+            </property>
+        </storage>
+        <property>
+            <flowHashIncludeVlanEnable>false</flowHashIncludeVlanEnable>
+        </property>
+    </pring>
+    
+    
+
+</snoop>

@@ -29,11 +29,5 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
-            <!--            provide 会让编译通过 但是打包的时候不会打进去  容器自带 servlet-->
-        </dependency>
     </dependencies>
 </project>

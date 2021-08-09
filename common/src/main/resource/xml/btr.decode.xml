@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><decode version="2.1">
+    <property>
+        <recordCode>
+            <field>SrcIp</field>
+            <field>DestIp</field>
+            <field>SrcPort</field>
+            <field>DestPort</field>
+            <field>PktId</field>
+            <field>PktLen</field>
+            <field>FlowId</field>
+            <field>FlowSide</field>
+            <field>Prot</field>
+            <field>Vlan</field>
+            <field>IpProt</field>
+            <field>TcpSeq</field>
+            <field>TcpAck</field>
+            <field>TcpPldLen</field>
+            <field>RRA</field>
+            <field>StreamId</field>
+            <field>DecodeId</field>
+            <field>PartId</field>
+            <field>MetaType</field>
+			 <field>SrcMac</field>
+            <field>DestMac</field>
+        </recordCode>
+        <flowAttachTimeout>9000</flowAttachTimeout>
+        <payloadCompleteRequired>true</payloadCompleteRequired>
+        <mismatchDropPacketEnable>true</mismatchDropPacketEnable>
+        <mismatchDropLogTickPacket>100000</mismatchDropLogTickPacket>
+    </property>
+
+    
+    <group decodeId="-1605810550" help="UXDB">
+        <streamMatch action="accept">
+            <streamId>1</streamId>
+        </streamMatch>
+
+        <addressMatch>
+            <ipPort ip1="0.0.0.0"/>
+            
+            
+            
+            
+        </addressMatch>        
+        <!--<ttlMatch action="reject"> -->
+        <!--<ttl>10</ttl> -->
+        <!--</ttlMatch> -->
+
+        <property>
+            <flowTimeout>300000</flowTimeout>
+            <flowDetachTimeout>300000</flowDetachTimeout>
+        </property>
+
+        <protocol baseProtocol="tcp" id="UXDB">
+  <property>
+    <attribute key="fullMode" type="Boolean" value="true"/>
+  </property>
+  <recordField allItem="true" template="name">
+  </recordField>
+</protocol>
+    </group>
+
+<group decodeId="-1605810550" help="TDS">
+        <streamMatch action="accept">
+            <streamId>1</streamId>
+        </streamMatch>
+
+        <addressMatch>
+  <ipPort ip1="0.0.0.0" port1="1433"/>
+
+        </addressMatch>
+        <!--<ttlMatch action="reject"> -->
+        <!--<ttl>10</ttl> -->
+        <!--</ttlMatch> -->
+
+        <property>
+            <flowTimeout>300000</flowTimeout>
+            <flowDetachTimeout>300000</flowDetachTimeout>
+        </property>
+
+        <protocol baseProtocol="tcp" id="TDS">
+  <property>
+    <attribute key="fullMode" type="Boolean" value="true"/>
+  </property>
+  <recordField allItem="true" template="name">
+  </recordField>
+</protocol>
+    </group>
+
+    
+    <group decodeId="1619577121" help="MYSQL">
+        <streamMatch action="accept">
+            <streamId>1</streamId>
+        </streamMatch>
+
+        <addressMatch>
+            <ipPort ip1="0.0.0.0"/>
+		</addressMatch>        
+
+        <!--<ttlMatch action="reject"> -->
+        <!--<ttl>10</ttl> -->
+        <!--</ttlMatch> -->
+
+        <property>
+            <flowTimeout>300000</flowTimeout>
+            <flowDetachTimeout>300000</flowDetachTimeout>
+        </property>
+
+        <protocol baseProtocol="tcp" id="MYSQL">
+  <property>
+    <attribute key="fullMode" type="Boolean" value="true"/>
+  </property>
+  <recordField allItem="true" template="name">
+  </recordField>
+</protocol>
+    </group>
+
+    
+    <group decodeId="-1257498812" help="PGSQL">
+        <streamMatch action="accept">
+            <streamId>1</streamId>
+        </streamMatch>
+
+        <addressMatch>
+            <ipPort ip1="0.0.0.0"/>
+ </addressMatch>
+        <!--<ttlMatch action="reject"> -->
+        <!--<ttl>10</ttl> -->
+        <!--</ttlMatch> -->
+
+        <property>
+            <flowTimeout>300000</flowTimeout>
+            <flowDetachTimeout>300000</flowDetachTimeout>
+        </property>
+
+        <protocol baseProtocol="tcp" id="PGSQL">
+  <property>
+    <attribute key="fullMode" type="Boolean" value="true"/>
+  </property>
+  <recordField allItem="true" template="name">
+  </recordField>
+</protocol>
+
+
+
+    </group>
+    
+    <group decodeId="1824483483" help="http">
+        <streamMatch action="accept">
+            <streamId>1</streamId>
+        </streamMatch>
+          <addressMatch>
+<ipPort ip1="0.0.0.0"/>
+       </addressMatch>
+ 
+        <!--<ttlMatch action="reject"> -->
+        <!--<ttl>10</ttl> -->
+        <!--</ttlMatch> -->
+
+        <property>
+            <flowTimeout>300000</flowTimeout>
+            <flowDetachTimeout>300000</flowDetachTimeout>
+        </property>
+
+        <protocol baseProtocol="tcp" id="http">
+     
+    <property>
+        <!--http结束部分不指明是否有后续数据包时，该属性用于继续解下一层协议-->
+        <attribute key="forceCheckPayload" type="Boolean" value="true"/>
+	<!--该属性可确定过滤条件并指定下层解码协议-->        
+<attribute key="acceptContentType" type="String" value="*/xml=xx xml,*/json=json,*/x-www-form-urlencoded=KEYVALUE PAIR,*/html=dummy ,*/plain=dummy"/>
+    </property>
+    <recordField allItem="true"/>
+</protocol>
+
+<!--指定的下层解码协议,必须配置-->
+<protocol baseProtocol="http" id="dummy">
+    <recordField allItem="false">
+        <field item="data">data</field>
+    </recordField>
+</protocol>
+<!--指定的下层解码协议,必须配置-->
+<!--xml被封装二次xml时，最外层的xml被定义为xx xml协议-->
+<protocol baseProtocol="http" id="xx xml">
+    <property>
+        <attribute key="forceCheckPayload" type="Boolean" value="true"/>
+    </property>
+    <recordField allItem="false" template="xpath">
+                <field cdata="true" exclude="true" item="/Envelope/Body/*/*"/>
+                <field item="/Envelope/Body/replyFeedbackResponse/return">RetCode</field>
+    </recordField>
+</protocol>
+
+<!--xml封装xml时，最外层（即第二层封装）的xml被定义为“xx xml”协议，第一层封装的xml为“x xml”协议-->
+<protocol baseProtocol="xx xml" id="x xml">
+    <property>
+        <attribute key="forceCheckPayload" type="Boolean" value="true"/>
+    </property>
+    <recordField allItem="false" template="xpath">
+		<!--指定exclude=true可以脱敏或不输出关键字-->
+                <field cdata="true" exclude="true" item="/NGBOSS/SvcCont"/>
+                <field item="/NGBOSS/TransIDO">TransID</field>
+                <field item="/NGBOSS/AreaCode">ChanID</field>
+    </recordField>
+</protocol>
+
+<protocol baseProtocol="x xml" id="xml">
+    <property>
+        <attribute key="forceCheckPayload" type="Boolean" value="true"/>
+    </property>
+    <recordField allItem="false" template="xpath">
+                <field item="/ServiceReq/SubNo">PhoneNO</field>
+                <field item="/ServiceReq/ServiceInfoList/ServiceInfo/ServID">TransType</field>
+    </recordField>
+</protocol>
+
+
+    </group>
+	
+	<group decodeId="1824483483" help="TNS">
+        <streamMatch action="accept">
+            <streamId>1</streamId>
+        </streamMatch>
+        
+        <addressMatch>
+            <ipPort ip1="0.0.0.0"/>
+        </addressMatch>
+
+        <property>
+            <flowTimeout>300000</flowTimeout>
+            <flowDetachTimeout>300000</flowDetachTimeout>
+        </property>
+
+     <protocol baseProtocol="tcp" id="TNS">
+        <recordField allItem="true">
+        </recordField>
+      </protocol>
+
+      <protocol baseProtocol="TNS" id="SQLNET">
+       <recordField allItem="false">
+               <field item="SQLText">SQLText</field>
+       </recordField>
+      </protocol>
+    </group>
+
+    <group decodeId="1824483484" help="TNS">
+        <streamMatch action="accept">
+            <streamId>1</streamId>
+        </streamMatch>
+
+        <addressMatch>
+            <ipPort ip1="0.0.0.0"/>
+        </addressMatch>
+        <property>
+            <flowTimeout>300000</flowTimeout>
+            <flowDetachTimeout>300000</flowDetachTimeout>
+        </property>
+
+         <protocol baseProtocol="tcp" id="TNS">
+             <recordField allItem="true">
+             </recordField>
+         </protocol>
+
+         <protocol baseProtocol="TNS" id="SQLNET">
+           <recordField allItem="false">
+                   <field item="SQLText">SQLText</field>
+                   <field item="RRA">RRA</field>
+                   <field item="Prot">Prot</field>
+                   <field item="MsgType">MsgType</field>
+                   <field item="values">values</field>
+                   <field item="hostname">hostname</field>
+                   <field item="appname">appname</field>
+                   <field item="streamIndex">streamIndex</field>
+                   <field item="dbuser">dbuser</field>
+           </recordField>
+         </protocol>
+    </group>
+    
+
+</decode>
